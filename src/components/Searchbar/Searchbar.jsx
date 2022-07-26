@@ -3,21 +3,21 @@ import { Component } from "react";
 import css from "./Searchbar.module.css";
 class Searchbar extends Component {
     state = {
-        images: "",
+        search: "",
     }
 
     handleInputChange = event => {
-        this.setState({ images: event.currentTarget.value.toLowerCase() });
+        this.setState({ search: event.currentTarget.value.toLowerCase() });
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        if (this.state.images.trim() === "") {
+        if (this.state.search.trim() === "") {
             alert("no images MF")
             return;
         }
-        this.props.onSubmit(this.state.images);
-        this.setState({ images: "" });
+        this.props.onSubmit(this.state.search);
+        this.setState({ search: "" });
     }
 
         render() {
@@ -31,10 +31,10 @@ class Searchbar extends Component {
                     <input
                         className={css.SearchForm__input}
                         type="text"
-                        // autocomplete="off"
-                        // autofocus
+                        autoComplete="off"
+                        autoFocus
                         placeholder="Search images and photos"
-                        value={this.state.images}
+                        value={this.state.search}
                         onChange={this.handleInputChange}
                     />
                 </form>

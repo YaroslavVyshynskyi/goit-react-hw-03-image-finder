@@ -4,10 +4,17 @@ import css from "./ImageGalleryItem.module.css"
 
 class ImageGalleryItem extends Component { 
     
-    render() { 
+    state = {
+        id: "",
+        webformatURL: "",
+        largeImageURL: "",
+    };
+
+    render() {
+        const { webformatURL, tags } = this.props.image;
         return (
             <li className={css.ImageGalleryItem}>
-                <img src="" alt="" className={css.ImageGalleryItem__image} />
+                <img src={ webformatURL } alt={ tags } className={css.ImageGalleryItem__image} />
             </li>
         );
     };
