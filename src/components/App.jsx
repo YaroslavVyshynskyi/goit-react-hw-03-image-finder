@@ -4,10 +4,15 @@ import ImageGallery from './ImageGallery/ImageGallery'
 import Loader from "./Loader/Loader"
 import axios from 'axios';
 import Button from './Button/Button';
+import "./styles.css" 
 
-
-const key = "27771595-431aa52f6f585107eea577c49";
-const url = "https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12"
+const KEY = "27771595-431aa52f6f585107eea577c49";
+const Status = {
+  LOADING: "loading",
+  IDLE: "idle",
+  ERROR: "error",
+  SUCCESS: "success"
+}
 
 class App extends Component {
   state = {
@@ -15,6 +20,7 @@ class App extends Component {
     images: [],
     page: 1,
     perPage: 12,
+    status: Status.IDLE,
   };
 
   fetchImages = async () => {
@@ -23,13 +29,16 @@ class App extends Component {
     }
 
     try {
+      this.setState({ status: Status.LOADING });
       const result = await axios.get(
-        `https://pixabay.com/api/?q=${this.state.searchQuery}&page=${this.state.page}&key=${key}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
+        `https://pixabay.com/api/?q=${this.state.searchQuery}&page=${this.state.page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
       )
-      this.setState({ images: [ ...this.state.images, ...result.data.hits ]});
+      this.setState({ images: [...this.state.images, ...result.data.hits], status: Status.SUCCESS });
+
     console.log(result);
     } catch (error) {
       console.error(error);
+      this.setState({ status: Status.ERROR });
     }
   };
 
@@ -52,16 +61,19 @@ class App extends Component {
   };
 
   render() {
+    const { images, status } = this.state;
+    const hasImages = !!images.length;
     return (
-      <div>
+      <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={this.state.images} />
-        {this.state.images.length ? <Button onClick={this.changePage} /> : "Enter search word"}
-        
-        <Loader />
+        {!hasImages && "Enter search word"}
+        {hasImages && status === Status.SUCCESS && <Button onClick={this.changePage}/>}
+        {status === Status.LOADING && <Loader/>}
       </div>
     );
   };
 };  
 
 export default App;
+

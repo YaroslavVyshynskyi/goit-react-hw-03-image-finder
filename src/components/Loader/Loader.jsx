@@ -1,16 +1,18 @@
 import React from "react";
-import { Audio } from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 
 const Loader = () => {
-    <Audio
-        height="80"
-        width="80"
+    return (
+    <ThreeDots
+        height="40"
+        width="40"
         radius="9"
-        color='green'
+        color='blue'
         ariaLabel='three-dots-loading'
-        wrapperStyle
-        wrapperClass
-    />
+        // wrapperStyle
+        // wrapperClass
+        />
+    )
 };
 
 export default Loader;
