@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery'
-import Loader from "./Loader/Loader"
-import axios from 'axios';
+import Loader from './Loader/Loader'
 import Button from './Button/Button';
-import "./styles.css" 
+import Modal from './Modal/Modal';
+import './styles.css' 
 
 const KEY = "27771595-431aa52f6f585107eea577c49";
 const Status = {
@@ -21,6 +22,17 @@ class App extends Component {
     page: 1,
     perPage: 12,
     status: Status.IDLE,
+    showModal: false,
+  };
+
+  componentDidMount() { 
+    this.fetchImages();
+  };
+
+  componentDidUpdate(prevProps, prevState) { 
+    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) { 
+      this.fetchImages();
+    }
   };
 
   fetchImages = async () => {
@@ -50,21 +62,19 @@ class App extends Component {
     this.setState({ page: this.state.page + 1 })
   };
 
-  componentDidMount() { 
-    this.fetchImages();
-  };
-
-  componentDidUpdate(prevProps, prevState) { 
-    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) { 
-      this.fetchImages();
-    }
-  };
+  
+  toggleModal = () => { 
+    this.setState(({showModal}) => ({
+      showModal: !showModal,
+    }))
+  }
 
   render() {
-    const { images, status } = this.state;
+    const { images, status, showModal } = this.state;
     const hasImages = !!images.length;
     return (
       <div className="App">
+        {showModal && <Modal onClose={this.toggleModal} /> }
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={this.state.images} />
         {!hasImages && "Enter search word"}
@@ -73,7 +83,7 @@ class App extends Component {
       </div>
     );
   };
-};  
+};
 
 export default App;
 
