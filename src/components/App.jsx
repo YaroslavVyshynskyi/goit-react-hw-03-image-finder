@@ -47,8 +47,7 @@ class App extends Component {
         `https://pixabay.com/api/?q=${this.state.searchQuery}&page=${this.state.page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
       )
       this.setState({ images: [...this.state.images, ...result.data.hits], status: Status.SUCCESS });
-
-    console.log(result);
+    
     } catch (error) {
       console.error(error);
       this.setState({ status: Status.ERROR });
@@ -56,6 +55,10 @@ class App extends Component {
   };
 
   handleFormSubmit = search => {
+    if (search === this.state.searchQuery) { 
+      alert("this request has already been processed. Please enter new request")
+      return
+    }
     this.setState({ searchQuery: search, images: [] });
   };
 

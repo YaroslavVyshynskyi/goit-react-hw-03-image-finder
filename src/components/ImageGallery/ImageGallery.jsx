@@ -17,7 +17,7 @@ class ImageGallery extends Component {
 };
 
 ImageGallery.propTypes = {
-    images: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.string, tags: PropTypes.string, webformatURL: PropTypes.string})),
+    images: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.number, tags: PropTypes.string, webformatURL: PropTypes.string})),
     onImageItemClick: PropTypes.func,
 };
 
