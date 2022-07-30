@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 
 const Button = ({ onClick }) => {
     return (
-        <button onClick={ onClick } type="button" className={css.Button}>Load More</button>
-   )
+        <button onClick={onClick} type="button" className={css.Button}>Load More</button>
+    );
 }
 
 Button.propTypes = {
