@@ -23,6 +23,7 @@ class App extends Component {
     perPage: 12,
     status: Status.IDLE,
     showModal: false,
+    selectedImageId: "",
   };
 
   componentDidMount() { 
@@ -30,7 +31,7 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) { 
-    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) { 
+    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
       this.fetchImages();
     }
   };
@@ -63,20 +64,22 @@ class App extends Component {
   };
 
   
-  toggleModal = () => { 
+  toggleModal = (imageId) => { 
     this.setState(({showModal}) => ({
       showModal: !showModal,
+      selectedImageId: imageId || "",
     }))
   }
 
   render() {
-    const { images, status, showModal } = this.state;
+    const { images, status, showModal, selectedImageId }  = this.state;
     const hasImages = !!images.length;
+    const selectedImage = images.find((image) => { return image.id === selectedImageId });
     return (
       <div className="App">
-        {showModal && <Modal onClose={this.toggleModal} /> }
+        {showModal && selectedImage && <Modal onClose={this.toggleModal} image={ selectedImage } /> }
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={this.state.images} />
+        <ImageGallery images={this.state.images} onImageItemClick={this.toggleModal} />
         {!hasImages && "Enter search word"}
         {hasImages && status === Status.SUCCESS && <Button onClick={this.changePage}/>}
         {status === Status.LOADING && <Loader/>}

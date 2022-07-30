@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react";
 import css from "./Searchbar.module.css";
+import { IoMdSearch } from 'react-icons/io';
+import PropTypes from 'prop-types'
 class Searchbar extends Component {
     state = {
         search: "",
@@ -25,7 +27,7 @@ class Searchbar extends Component {
             <header className={css.Searchbar}>
                 <form className={css.SearchForm} onSubmit={this.handleSubmit}>
                     <button type="submit" className={css.SearchForm__button}>
-                        <span className={css.SearchForm__button__label}>Search</span>
+                        <IoMdSearch className={css.SearchForm__button__icon} />
                     </button>
 
                     <input
@@ -43,4 +45,9 @@ class Searchbar extends Component {
     };
 };
 
+Searchbar.propTypes = {
+    onSubmit: PropTypes.func,
+};
+
 export default Searchbar;
+

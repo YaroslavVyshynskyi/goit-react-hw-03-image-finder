@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { createPortal } from "react-dom";
 import css from "./Modal.module.css"
-import * as basicLightbox from 'basiclightbox'
+import PropTypes from 'prop-types'
 
 const modalRoot = document.querySelector("#modal-root");
 
@@ -28,26 +28,21 @@ class Modal extends Component {
     }
 
     render() { 
+        const { largeImageURL, tags } = this.props.image;
         return createPortal(
             <div className={css.Modal__backdrop} onClick={this.handleBackdropClick} >
                 <div className={css.Modal__content}>
-                    <img src="assets/images/image.png" ></img>
+                    <img src={largeImageURL} alt={tags}></img>
                 </div>
             </div>,
             modalRoot,
         );
     }
-    // const instance = basicLightbox.create(`
-    //         <div class="modal">
-    //             <img src="assets/images/image.png" >
-    //         </div>
-    // `);
-
-    // return (
-    //     instance.show()
-    // )
 };
 
-
+Modal.propTypes = {
+    image: PropTypes.shape({tags: PropTypes.string, largeImageURL: PropTypes.string}),
+    onClose: PropTypes.func,
+};
 
 export default Modal;
