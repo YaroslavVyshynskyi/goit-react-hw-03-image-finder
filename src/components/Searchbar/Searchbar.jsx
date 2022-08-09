@@ -35,7 +35,7 @@ class Searchbar extends Component {
                         type="text"
                         autoComplete="off"
                         autoFocus
-                        placeholder="Search images and photos"
+                        placeholder={this.props.searchQuery || "Search images and photos"}
                         value={this.state.search}
                         onChange={this.handleInputChange}
                     />
@@ -46,7 +46,8 @@ class Searchbar extends Component {
 };
 
 Searchbar.propTypes = {
-    onSubmit: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string,
 };
 
 export default Searchbar;

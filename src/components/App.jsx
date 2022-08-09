@@ -24,6 +24,7 @@ class App extends Component {
     status: Status.IDLE,
     showModal: false,
     selectedImageId: "",
+    totalImages: 0,
   };
 
   componentDidMount() { 
@@ -46,7 +47,7 @@ class App extends Component {
       const result = await axios.get(
         `https://pixabay.com/api/?q=${this.state.searchQuery}&page=${this.state.page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
       )
-      this.setState({ images: [...this.state.images, ...result.data.hits], status: Status.SUCCESS });
+      this.setState({ images: [...this.state.images, ...result.data.hits], status: Status.SUCCESS, totalImages: result.data.totalHits });
     
     } catch (error) {
       console.error(error);
@@ -59,7 +60,7 @@ class App extends Component {
       alert("this request has already been processed. Please enter new request")
       return
     }
-    this.setState({ searchQuery: search, images: [] });
+    this.setState({ searchQuery: search, images: [], page: 1 });
   };
 
   changePage = () => {
@@ -75,16 +76,17 @@ class App extends Component {
   }
 
   render() {
-    const { images, status, showModal, selectedImageId }  = this.state;
+    const { images, status, showModal, selectedImageId, searchQuery, totalImages }  = this.state;
     const hasImages = !!images.length;
+    const hasMoreImages = images.length < totalImages;
     const selectedImage = images.find((image) => { return image.id === selectedImageId });
     return (
       <div className="App">
         {showModal && selectedImage && <Modal onClose={this.toggleModal} image={ selectedImage } /> }
-        <Searchbar onSubmit={this.handleFormSubmit} />
+        <Searchbar onSubmit={this.handleFormSubmit} searchQuery={ searchQuery } />
         <ImageGallery images={this.state.images} onImageItemClick={this.toggleModal} />
         {!hasImages && "Enter search word"}
-        {hasImages && status === Status.SUCCESS && <Button onClick={this.changePage}/>}
+        {hasImages && hasMoreImages && status === Status.SUCCESS && <Button onClick={this.changePage}/>}
         {status === Status.LOADING && <Loader/>}
       </div>
     );

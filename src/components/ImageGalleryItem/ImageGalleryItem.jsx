@@ -15,8 +15,8 @@ class ImageGalleryItem extends Component {
 };
 
 ImageGalleryItem.propTypes = {
-    image: PropTypes.shape({id: PropTypes.number, tags: PropTypes.string, webformatURL: PropTypes.string}),
-    onClick: PropTypes.func,
+    image: PropTypes.shape({id: PropTypes.number, tags: PropTypes.string, webformatURL: PropTypes.string}).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;
